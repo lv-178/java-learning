@@ -1,11 +1,11 @@
 public class Computer {
-    public final String vendor;
-    public final String name;
-    public final Processor processor;
-    public final RAM ram;
-    public final ROM rom;
-    public final Screen screen;
-    public final Keyboard keyboard;
+    private final String vendor;
+    private final String name;
+    private final Processor processor;
+    private final RAM ram;
+    private final ROM rom;
+    private final Screen screen;
+    private final Keyboard keyboard;
 
     public Computer(String vendor, String name, Processor processor, RAM ram, ROM rom, Screen screen, Keyboard keyboard) {
         this.vendor = vendor;
