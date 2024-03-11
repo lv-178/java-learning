@@ -1,7 +1,6 @@
 package ru.skillbox.notification_sender;
 
 import ru.skillbox.notification.Notification;
-
 import java.util.List;
 
 /**
@@ -16,7 +15,10 @@ public interface NotificationSender<T extends Notification> {
      *
      * @param notification уведомление
      */
-    void send(T notification);
+    default void send(T notification){
+        System.out.println(notification.otherInformation());
+        System.out.println("message: " + notification.formattedMessage());
+    }
 
     /**
      * Отправка множества уведомлений
