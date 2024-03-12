@@ -7,7 +7,6 @@ public class SmsNotification implements Notification {
 
     private final String message;
     private final String receivers;
-    private String otherInformation = "";
 
     @Override
     public String formattedMessage() {
@@ -16,7 +15,6 @@ public class SmsNotification implements Notification {
 
     @Override
     public String otherInformation() {
-        otherInformation = "\nSMS\nreceivers: " + receivers;
-        return otherInformation;
+        return "\nSMS\nreceivers: " + receivers;
     }
 }

@@ -8,7 +8,6 @@ public class EmailNotification implements Notification {
     private final String message;
     private final String subject;
     private final String receivers;
-    private String otherInformation = "";
 
     @Override
     public String formattedMessage() {
@@ -17,7 +16,6 @@ public class EmailNotification implements Notification {
 
     @Override
     public String otherInformation() {
-        otherInformation = "\nEMAIL\nsubject: " + subject + "\nreceivers: " + receivers;
-        return otherInformation;
+        return "\nEMAIL\nsubject: " + subject + "\nreceivers: " + receivers;
     }
 }

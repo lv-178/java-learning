@@ -3,10 +3,10 @@ package ru.skillbox.notification_sender;
 import ru.skillbox.notification.EmailNotification;
 import java.util.List;
 
-public class EmailNotificationSender implements NotificationSender {
+public class EmailNotificationSender implements NotificationSender<EmailNotification> {
 
     @Override
-    public void send(List notifications) {
-        notifications.forEach(email -> send((EmailNotification) email));
+    public void send(List<EmailNotification> notifications) {
+        notifications.forEach(this::send);
     }
 }
