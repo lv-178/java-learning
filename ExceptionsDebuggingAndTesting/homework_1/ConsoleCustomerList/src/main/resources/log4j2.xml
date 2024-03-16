@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL" />
+        </Console>
+
+        <File name="Queries" fileName="logs/queries.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+        </File>
+        <File name="Errors" fileName="logs/errors.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL" />
+            </Filters>
+        </File>
+    </appenders>
+    <loggers>
+        <root level="all">
+            <appender-ref ref="Queries" level="info"/>
+            <appender-ref ref="Errors" level="error"/>
+            <appender-ref ref="Console" level="debug"/>
+        </root>
+    </loggers>
+</configuration>
+
+
+<!--<configuration>-->
+<!--    <appender name="STDOUT_FILE" class="org.apache.logging.log4j.EventLogger">-->
+<!--        <file>stdout.log</file>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--        <filter class="org.apache.logging.log4j.Level">-->
+<!--            <level>INFO</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+<!--    </appender>-->
+<!--    <appender name="STDERR_FILE" class="org.apache.logging.log4j.EventLogger">-->
+<!--        <file>stderr.log</file>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--        <filter class="org.apache.logging.log4j.Level">-->
+<!--            <level>ERROR</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+<!--    </appender>-->
+<!--    <root level="debug">-->
+<!--        <appender-ref ref="STDERR_FILE" level="error" />-->
+<!--        <appender-ref ref="STDOUT_FILE" level="info" />-->
+<!--    </root>-->
+<!--</configuration>-->
+
