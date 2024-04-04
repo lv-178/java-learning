@@ -6,23 +6,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
-        String url = "jdbc:mysql://localhost:3306/courses?useSSL=false&serverTimezone=UTC&characterEncoding=utf8"; //&serverTimezone=UTC&characterEncoding=utf8
-        String user = "root";
-        String pass = "Password";
-
         try {
-            Connection connection = DriverManager.getConnection(url, user, pass);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SHOW TABLES;");
-
             StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                     .configure("hibernate.cfg.xml").build();
             Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
@@ -30,18 +21,48 @@ public class Main {
             Session session = sessionFactory.openSession();
 
             Transaction transaction = session.beginTransaction();
-//            Student student1 = new Student();
-//            Course course1 = new Course();
-//            Teacher teacher1 = new Teacher();
-//            Purchase purchase1 = new Purchase();
-//            session.save(student1);
-//            session.save(course1);
-//            session.save(teacher1);
-//            session.save(purchase1);
+
+            CriteriaBuilder builderCourse = session.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaCourse = builderCourse.createQuery(Course.class);
+            criteriaCourse.select(criteriaCourse.from(Course.class));
+
+            CriteriaBuilder builderStudent = session.getCriteriaBuilder();
+            CriteriaQuery<Student> criteriaStudent = builderStudent.createQuery(Student.class);
+            criteriaStudent.select(criteriaStudent.from(Student.class));
+
+            CriteriaBuilder builderPurchaseList = session.getCriteriaBuilder();
+            CriteriaQuery<PurchaseList> criteriaPurchaseList = builderPurchaseList.createQuery(PurchaseList.class);
+            criteriaPurchaseList.select(criteriaPurchaseList.from(PurchaseList.class));
+
+            List<Student> studentsList = session.createQuery(criteriaStudent).getResultList();
+            List<Course> coursesList = session.createQuery(criteriaCourse).getResultList();
+
+            List<PurchaseList> purchaseList = session.createQuery(criteriaPurchaseList).list();
+
+            List<LinkedPurchaseList> linkedPurchaseList = new ArrayList<>();
+            for (PurchaseList purchase : purchaseList) {
+                for (Course course : coursesList) {
+                    if (purchase.getCourseName().equals(course.getName())) {
+                        for (Student student : studentsList) {
+                            if (student.getName().equals(purchase.getStudentName())) {
+                                LinkedPurchaseList linked = new LinkedPurchaseList();
+                                linked.setCourseId(course.getId());
+                                linked.setStudentId(student.getId());
+                                LinkedPurchaseListKey key = new LinkedPurchaseListKey();
+                                key.setCourseId(course.getId());
+                                key.setStudentId(student.getId());
+                                linked.setId(key);
+                                linkedPurchaseList.add(linked);
+                            }
+                        }
+                    }
+                }
+            }
+            for (LinkedPurchaseList l : linkedPurchaseList) {
+                System.out.println(l.getCourseId() + " " + l.getStudentId());
+                session.persist(l);
+            }
             transaction.commit();
-
-//            statement.execute("courses < skillboxdumpwfk.sql");
-
             sessionFactory.close();
 
         } catch (Exception e) {
