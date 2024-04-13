@@ -21,7 +21,6 @@ public class HtmlReader {
         } catch (IOException e) {
             System.out.println("Page not found");
         }
-        //return Document type deleted
     }
 
     public void search() {
